@@ -1,0 +1,18 @@
+name: Resizer
+version: 2.0.0-dev
+lowCaseName: resizer
+description: 'An image resizer for MODX using Imagine'
+author: Jason Grant
+systemSettings:
+  - key: graphics_library
+    value: '2'
+    area: resizer
+build:
+  readme: core/components/resizer/docs/readme.txt
+  license: core/components/resizer/docs/license.txt
+  changelog: core/components/resizer/docs/changelog.txt
+  scriptsAfter: 
+    - resizer.validator.php
+    - resolve.composer.php
+  requires:
+      modx: '>=3.0.0-alpha'

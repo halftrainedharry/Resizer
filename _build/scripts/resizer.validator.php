@@ -21,21 +21,21 @@
  * @subpackage build
  */
 
-/* @var $object xPDOObject */
+/* @var $transport xPDOObject */
 /* @var $modx modX */
 /* @var array $options */
+use MODX\Revolution\modSystemSetting;
 
-if ($object->xpdo) {
-	$modx =& $object->xpdo;
+if ($transport->xpdo) {
+	$modx =& $transport->xpdo;
 	switch ($options[xPDOTransport::PACKAGE_ACTION]) {
 		case xPDOTransport::ACTION_UPGRADE:
-			// move an existing non-default jpeg quality setting into the new global options
-			$graphicsLib = $modx->getOption('resizer.graphics_library', null, false);
-			if ($graphicsLib == 1) {
-				$setting = $modx->getObject('modSystemSetting', 'resizer.graphics_library');
-				$setting->set('value', 2);
-				$setting->save();
-			}
+			// $graphicsLib = $modx->getOption('resizer.graphics_library', null, false);
+			// if ($graphicsLib == 1) {
+			// 	$setting = $modx->getObject(modSystemSetting::class, 'resizer.graphics_library');
+			// 	$setting->set('value', 2);
+			// 	$setting->save();
+			// }
 		case xPDOTransport::ACTION_INSTALL:
 			/* return false if conditions are not met */
 			$modx->log(xPDO::LOG_LEVEL_INFO, '[Resizer]');
@@ -50,7 +50,7 @@ if ($object->xpdo) {
 			}
 
 			$graphicsSuccess = false;
-			$modx->log(xPDO::LOG_LEVEL_INFO,'Availabe graphics libraries:');
+			$modx->log(xPDO::LOG_LEVEL_INFO, 'Availabe graphics libraries:');
 
 			if (class_exists('Gmagick', false)) {
 				$magick = new Gmagick();

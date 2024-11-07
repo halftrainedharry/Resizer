@@ -1,12 +1,16 @@
-Resizer v1.0.0-pl
+Resizer v2.0.0-dev
 ==========
 
-A simple, modern image resizer for MODX. Built on [Imagine](https://github.com/avalanche123/Imagine), Resizer supports the Gmagick, Imagick and GD extensions and can be considerably faster than phpThumb for image sizing and cropping operations. Available from the MODX [Extras Repo](http://modx.com/extras/package/resizer).
+This is an experimental version only for MODX 3.
+Support for the watermark filter has been removed.
+
+---
+
+Resizer is an image resizer for MODX. Built on [Imagine](https://github.com/avalanche123/Imagine), Resizer supports the Gmagick, Imagick and GD extensions and can be considerably faster than phpThumb for image sizing and cropping operations. Available from the MODX [Extras Repo](http://modx.com/extras/package/resizer).
 
 Requirements
 -----------
 
-* PHP 5.3.2 or higher
 * One or more of the following PHP extensions: Gmagick, Imagick (with ImageMagick 6.2.9 or higher), GD 2.0.1 or higher
 
 Both Imagick and Gmagick offer much better performance and lower memory requirements than GD, especially if you're using a relatively recent version of [ImageMagick](http://www.imagemagick.org/)/[GraphicsMagick](http://www.graphicsmagick.org/).  I think Imagick is the best overall: good performance and good support for all features.  Gmagick is a bit faster but doesn’t have full support for opacity, though this only matters if you’re adding partially transparent backgrounds to PNGs or using watermarks.  If your site does lots of image resizing—especially thumbnailing large jpegs—Imagick or Gmagick will be _much_ faster.
