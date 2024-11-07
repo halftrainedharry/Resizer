@@ -1,5 +1,5 @@
 <?php
-namespace Reductionist;
+namespace Resizer;
 /**
  * Reductionist
  * Copyright 2014 Jason Grant
@@ -11,7 +11,7 @@ use Imagine\Image\Box;
 
 class Reductionist {
 
-public $debugmessages = array('Reductionist v1.0.1');
+public $debugmessages = array('Resizer\Reductionist v2.0.0-dev');
 public $debug = false;  //enable generation of debugging messages
 public $defaultQuality = 80;
 public $width;
@@ -34,14 +34,14 @@ public function __construct($graphicsLib = 2) {
 		$this->debugmessages[] = 'Using Imagick';
 		self::$maxsize = null;
 		set_time_limit(0);
-		$this->imagine = new Imagick\RImagine();
+		$this->imagine = new \Imagine\Imagick\Imagine();
 		$this->gLib = 2;
 	}
 	elseif ($graphicsLib && class_exists('Gmagick', false)) {
 		$this->debugmessages[] = 'Using Gmagick';
 		self::$maxsize = null;
 		set_time_limit(0);  // execution time accounting seems strange on some systems. Maybe because of multi-threading?
-		$this->imagine = new Gmagick\RImagine();
+		$this->imagine = new \Imagine\Gmagick\Imagine();
 		$this->gLib = 1;
 	}
 	else {  // good ol' GD
@@ -51,6 +51,7 @@ public function __construct($graphicsLib = 2) {
 		if (!isset(self::$maxsize)) {
 			self::$maxsize = ini_get('memory_limit');
 			$magnitude = strtoupper(substr(self::$maxsize, -1));
+			self::$maxsize = substr(self::$maxsize, 0, -1);
 			if ($magnitude === 'G')  { self::$maxsize *= 1024; }
 			elseif ($magnitude === 'K')  { self::$maxsize /= 1024; }
 			self::$maxsize = (self::$maxsize - 18) * 209715;  // 20% of memory_limit, in bytes. -18MB for CMS, framework, PHP overhead
@@ -159,6 +160,12 @@ public function resetDebug() {
  */
 public function processImage($input, $output, $options = array()) {
 	if ($this->debug)  { $startTime = microtime(true); }
+
+	if (mb_stripos($input, MODX_BASE_PATH) !== 0){
+		// Add the base path to the image path
+		$input = MODX_BASE_PATH . $input;
+	}
+	
 	if (!is_readable($input)) {
 		$this->debugmessages[] = 'File not ' . (file_exists($input) ? 'readable': 'found') . ": $input  *** Skipping ***";
 		return false;
@@ -400,10 +407,10 @@ public function processImage($input, $output, $options = array()) {
 				if ($filter[0] === 'usm') {  // right now only unsharp mask is implemented, sort of
 					$image->effects()->sharpen();  // radius, amount and threshold are ignored!
 				}
-				elseif ($filter[0] === 'wmt' || $filter[0] === 'wmi') {
-					$doApply = true;
-					$transformation->add(new Filter\Watermark($filter, $filterlog));
-				}
+				// elseif ($filter[0] === 'wmt' || $filter[0] === 'wmi') {
+				// 	$doApply = true;
+				// 	$transformation->add(new Filter\Watermark($filter, $filterlog));
+				// }
 			}
 		}
 

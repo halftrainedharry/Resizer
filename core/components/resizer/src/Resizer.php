@@ -19,8 +19,26 @@
  * Place, Suite 330, Boston, MA 02111-1307 USA
  **/
 
-require_once dirname(__DIR__, 1) . '/vendor/autoload.php';
+namespace Resizer;
 
-class Resizer extends \Resizer\Resizer
+use Resizer\Reductionist;
+
+class Resizer extends Reductionist
 {
+
+	public function __construct(\modX &$modx, $graphicsLib = null) {
+		if ($graphicsLib === null) {
+			$graphicsLib = $modx->getOption('resizer.graphics_library', null, 2);
+		}
+		parent::__construct($graphicsLib);
+		$this->debugmessages = str_replace('Reductionist', 'Resizer', $this->debugmessages);
+		// Add some common MODX search paths for watermark images and fonts
+		self::$assetpaths[] = $modx->getOption('assets_path');
+		self::$assetpaths[] = $modx->getOption('base_path');
+		self::$assetpaths[] = MODX_CORE_PATH;
+		self::$assetpaths[] = MODX_CORE_PATH . 'model/phpthumb/fonts/';
+		self::$assetpaths[] = MODX_CORE_PATH . 'model/phpthumb/images/';
+	}
+
+
 }
