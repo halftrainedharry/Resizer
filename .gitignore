@@ -2,7 +2,6 @@
 no-git/*
 .DS_Store
 update
-composer.lock
 .vscode
 _packages/resizer-2.0.0-dev/*
 config.core.php

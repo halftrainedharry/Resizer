@@ -357,7 +357,7 @@ public function processImage($input, $output, $options = array()) {
 /* source crop (finish) */
 		if (isset($scBox)) {
 			$scale = max($width / $origWidth, $height / $origHeight);
-			if ($scale <= 0.5 && $this->gLib && $image->getFormat() === IMG_JPG) {
+			if ($scale <= 0.5 && $this->gLib && getimagesize($input)[2] === IMG_JPG) {
 				$image->resize(new Box(round($inputParams['width'] * $scale), round($inputParams['height'] * $scale)));
 				$scStart = new \Imagine\Image\Point(round($cropStartX * $scale), round($cropStartY * $scale));
 				$scBox = new Box(round($scBox->getWidth() * $scale), round($scBox->getHeight() * $scale));
@@ -430,7 +430,7 @@ public function processImage($input, $output, $options = array()) {
 			else  { $bgBox = new Box($width, $height); }
 			$image = $this->imagine
 				->create($bgBox, self::$palette->color($bgColor[0], 100 - $bgColor[1]))
-				->paste($this->gLib ? $image->getImage() : $image, isset($farPoint) ? $farPoint : new \Imagine\Image\Point(0, 0));
+				->paste($image, isset($farPoint) ? $farPoint : new \Imagine\Image\Point(0, 0));
 		}
 
 /* filters (finish) */
@@ -451,9 +451,9 @@ public function processImage($input, $output, $options = array()) {
 				$this->debugmessages[] = 'Modified options:' . self::formatDebugArray($changed, true);
 			}
 			$this->debugmessages[] = "Original - w: {$inputParams['width']} | h: {$inputParams['height']} " . sprintf("(%2.2f MP)", $inputParams['width'] * $inputParams['height'] / 1e6);
-			if (isset($image->prescalesize)) {
-				$this->debugmessages[] = "JPEG prescale - w: {$image->prescalesize[0]} | h: {$image->prescalesize[1]} " . sprintf("(%2.2f MP)", $image->prescalesize[0] * $image->prescalesize[1] / 1e6);
-			}
+			// if (isset($image->prescalesize)) {
+			// 	$this->debugmessages[] = "JPEG prescale - w: {$image->prescalesize[0]} | h: {$image->prescalesize[1]} " . sprintf("(%2.2f MP)", $image->prescalesize[0] * $image->prescalesize[1] / 1e6);
+			// }
 			if (isset($scBox)) {
 				$this->debugmessages[] = "Source area - start: $scStart | box: $scBox";
 			}
